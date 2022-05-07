@@ -474,6 +474,14 @@ bool UniversalTelegramBot::processResult(JsonObject result, int messageIndex) {
           messages[messageIndex].hasDocument = true;
         else
           messages[messageIndex].hasDocument = false;
+      } else if (message.containsKey("audio")) {
+        String file_id = message["audio"]["file_id"].as<String>();
+        messages[messageIndex].file_caption = message["caption"].as<String>();
+        messages[messageIndex].file_name = message["audio"]["file_name"].as<String>();
+        if (getFile(messages[messageIndex].file_path, messages[messageIndex].file_size, file_id) == true)
+          messages[messageIndex].hasDocument = true;
+        else
+          messages[messageIndex].hasDocument = false;
       }
       if (message.containsKey("reply_to_message")) {
         messages[messageIndex].reply_to_message_id = message["reply_to_message"]["message_id"];
